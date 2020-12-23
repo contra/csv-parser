@@ -1,4 +1,4 @@
-const { Transform } = require('stream')
+const { Transform } = require('readable-stream')
 
 const [cr] = Buffer.from('\r')
 const [nl] = Buffer.from('\n')
@@ -192,7 +192,7 @@ class CsvParser extends Transform {
     this.push(row)
   }
 
-  _flush (cb) {
+  _final (cb) {
     if (this.state.escaped || !this._prev) return cb()
     this.parseLine(this._prev, this.state.previousEnd, this._prev.length + 1) // plus since online -1s
     cb()
